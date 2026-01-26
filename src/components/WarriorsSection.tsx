@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { 
   Shield, 
   Award, 
@@ -101,13 +102,17 @@ const WarriorsSection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="secondary" size="lg" className="gap-2">
-                Register as Warrior
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-              <Button variant="heroOutline" size="lg">
-                Learn More
-              </Button>
+              <Link to="/warrior-registration">
+                <Button variant="secondary" size="lg" className="gap-2">
+                  Register as Warrior
+                  <ArrowRight className="h-5 w-5" />
+                </Button>
+              </Link>
+              <Link to="/warrior-registration?tab=map">
+                <Button variant="heroOutline" size="lg">
+                  Find Warriors Near You
+                </Button>
+              </Link>
             </div>
           </motion.div>
 

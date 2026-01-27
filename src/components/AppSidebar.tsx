@@ -11,6 +11,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import sanjeevaniLogo from "@/assets/sanjeevani-logo.jpg";
+import { cn } from "@/lib/utils";
 
 const navItems = [
   { title: "Home", href: "#home", icon: Home },
@@ -25,21 +26,36 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border">
+    <Sidebar 
+      collapsible="icon" 
+      className={cn(
+        "border-r border-border transition-all duration-300 ease-in-out",
+        collapsed ? "w-16" : "w-64"
+      )}
+    >
       <SidebarHeader className="p-4 border-b border-border">
-        <div className="flex items-center gap-3">
+        <div className={cn(
+          "flex items-center gap-3 transition-all duration-300",
+          collapsed && "justify-center"
+        )}>
           <img
             src={sanjeevaniLogo}
             alt="Sanjeevani"
-            className="h-10 w-10 object-contain rounded-lg"
+            className={cn(
+              "object-contain rounded-lg transition-all duration-300",
+              collapsed ? "h-8 w-8" : "h-10 w-10"
+            )}
           />
-          {!collapsed && (
-            <span className="font-bold text-lg text-foreground">Sanjeevani</span>
-          )}
+          <span className={cn(
+            "font-bold text-lg text-foreground transition-all duration-300 whitespace-nowrap overflow-hidden",
+            collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+          )}>
+            Sanjeevani
+          </span>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="py-4">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -48,12 +64,18 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild tooltip={item.title}>
                     <a
                       href={item.href}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted transition-colors"
-                    >
-                      <item.icon className="h-5 w-5 text-primary" />
-                      {!collapsed && (
-                        <span className="font-medium">{item.title}</span>
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2.5 mx-2 rounded-lg hover:bg-muted transition-all duration-200 group",
+                        collapsed && "justify-center px-2"
                       )}
+                    >
+                      <item.icon className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span className={cn(
+                        "font-medium transition-all duration-300 whitespace-nowrap overflow-hidden",
+                        collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+                      )}>
+                        {item.title}
+                      </span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

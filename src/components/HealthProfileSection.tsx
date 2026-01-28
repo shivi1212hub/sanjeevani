@@ -9,22 +9,11 @@ import {
   FileText,
   CheckCircle2,
   CreditCard,
-  Link2,
-  Loader2
+  Link2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { toast } from "sonner";
+import AbhaLinkingDialog from "@/components/AbhaLinkingDialog";
 import sanjeevaniLogo from "@/assets/sanjeevani-logo.jpg";
 
 const profileFeatures = [
@@ -61,40 +50,10 @@ const profileFeatures = [
 ];
 
 const HealthProfileSection = () => {
-  const [abhaId, setAbhaId] = useState("");
-  const [isLinking, setIsLinking] = useState(false);
   const [isLinked, setIsLinked] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const validateAbhaId = (id: string) => {
-    // ABHA ID format: 14-digit number or XX-XXXX-XXXX-XXXX format
-    const numericPattern = /^\d{14}$/;
-    const formattedPattern = /^\d{2}-\d{4}-\d{4}-\d{4}$/;
-    return numericPattern.test(id) || formattedPattern.test(id);
-  };
-
-  const handleLinkAbha = async () => {
-    if (!abhaId.trim()) {
-      toast.error("Please enter your ABHA ID");
-      return;
-    }
-
-    if (!validateAbhaId(abhaId.trim())) {
-      toast.error("Invalid ABHA ID format. Use 14 digits or XX-XXXX-XXXX-XXXX format");
-      return;
-    }
-
-    setIsLinking(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsLinking(false);
+  const handleLinkSuccess = () => {
     setIsLinked(true);
-    setDialogOpen(false);
-    toast.success("ABHA ID linked successfully!", {
-      description: "Your Ayushman Bharat Health Account is now connected."
-    });
   };
 
   return (
@@ -166,8 +125,10 @@ const HealthProfileSection = () => {
                   </div>
                 </div>
                 
-                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                  <DialogTrigger asChild>
+<AbhaLinkingDialog
+                  isLinked={isLinked}
+                  onLinkSuccess={handleLinkSuccess}
+                  trigger={
                     <Button 
                       variant={isLinked ? "outline" : "default"} 
                       size="sm" 
@@ -176,83 +137,8 @@ const HealthProfileSection = () => {
                       <Link2 className="h-4 w-4" />
                       {isLinked ? "Manage" : "Link ABHA"}
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle className="flex items-center gap-2">
-                        <Shield className="h-5 w-5 text-primary" />
-                        Link Your ABHA ID
-                      </DialogTitle>
-                      <DialogDescription>
-                        Connect your Ayushman Bharat Health Account for seamless health record access during emergencies.
-                      </DialogDescription>
-                    </DialogHeader>
-                    
-                    <div className="space-y-4 py-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="abha-id">ABHA ID / Health ID</Label>
-                        <Input
-                          id="abha-id"
-                          placeholder="XX-XXXX-XXXX-XXXX or 14-digit number"
-                          value={abhaId}
-                          onChange={(e) => setAbhaId(e.target.value)}
-                          maxLength={17}
-                        />
-                        <p className="text-xs text-muted-foreground">
-                          Enter your 14-digit ABHA number or formatted ID
-                        </p>
-                      </div>
-
-                      <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                        <h4 className="font-medium text-sm">Benefits of linking ABHA:</h4>
-                        <ul className="text-sm text-muted-foreground space-y-1">
-                          <li className="flex items-center gap-2">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                            Instant access to medical history during emergencies
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                            Seamless hospital and clinic integrations
-                          </li>
-                          <li className="flex items-center gap-2">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-success" />
-                            Secure, government-backed health identity
-                          </li>
-                        </ul>
-                      </div>
-
-                      <Button 
-                        onClick={handleLinkAbha} 
-                        className="w-full gap-2"
-                        disabled={isLinking}
-                      >
-                        {isLinking ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Verifying...
-                          </>
-                        ) : (
-                          <>
-                            <Link2 className="h-4 w-4" />
-                            Link ABHA ID
-                          </>
-                        )}
-                      </Button>
-
-                      <p className="text-xs text-center text-muted-foreground">
-                        Don't have an ABHA ID?{" "}
-                        <a 
-                          href="https://abha.abdm.gov.in" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          Create one here
-                        </a>
-                      </p>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                  }
+                />
               </div>
             </Card>
 

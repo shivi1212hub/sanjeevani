@@ -1,4 +1,4 @@
-import { Home, User, Heart, Shield, LayoutDashboard } from "lucide-react";
+import { Home, User, Heart, Shield, LayoutDashboard, Activity } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -10,12 +10,14 @@ import {
   SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 import sanjeevaniLogo from "@/assets/sanjeevani-logo.jpg";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { title: "Home", href: "#home", icon: Home },
   { title: "Health Profile", href: "#profile", icon: User },
+  { title: "Heart Rate (rPPG)", href: "/rppg", icon: Activity, isRoute: true },
   { title: "First Aid", href: "#first-aid", icon: Heart },
   { title: "Warriors", href: "#warriors", icon: Shield },
   { title: "Emergency Dashboard", href: "#sos", icon: LayoutDashboard },
@@ -62,21 +64,39 @@ export function AppSidebar() {
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild tooltip={item.title}>
-                    <a
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 mx-2 rounded-lg hover:bg-muted transition-all duration-200 group",
-                        collapsed && "justify-center px-2"
-                      )}
-                    >
-                      <item.icon className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span className={cn(
-                        "font-medium transition-all duration-300 whitespace-nowrap overflow-hidden",
-                        collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
-                      )}>
-                        {item.title}
-                      </span>
-                    </a>
+                    {item.isRoute ? (
+                      <Link
+                        to={item.href}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 mx-2 rounded-lg hover:bg-muted transition-all duration-200 group",
+                          collapsed && "justify-center px-2"
+                        )}
+                      >
+                        <item.icon className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                        <span className={cn(
+                          "font-medium transition-all duration-300 whitespace-nowrap overflow-hidden",
+                          collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+                        )}>
+                          {item.title}
+                        </span>
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 mx-2 rounded-lg hover:bg-muted transition-all duration-200 group",
+                          collapsed && "justify-center px-2"
+                        )}
+                      >
+                        <item.icon className="h-5 w-5 text-primary flex-shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                        <span className={cn(
+                          "font-medium transition-all duration-300 whitespace-nowrap overflow-hidden",
+                          collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
+                        )}>
+                          {item.title}
+                        </span>
+                      </a>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

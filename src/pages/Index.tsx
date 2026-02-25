@@ -8,8 +8,9 @@ import HealthProfileSection from "@/components/HealthProfileSection";
 import FirstAidSection from "@/components/FirstAidSection";
 import WarriorsSection from "@/components/WarriorsSection";
 import Footer from "@/components/Footer";
-import { Phone, User } from "lucide-react";
+import { Phone, User, Shield, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const SIDEBAR_STATE_KEY = "sanjeevani-sidebar-collapsed";
 
@@ -39,13 +40,17 @@ const Index = () => {
             <div className="flex items-center justify-between h-14 px-4">
               <SidebarTrigger className="text-foreground transition-transform duration-200 hover:scale-110" />
               <div className="flex items-center gap-3">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <User className="h-4 w-4" />
-                  Login
+                <Button variant="outline" size="default" className="gap-2 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 group">
+                  <User className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold">Patient Login</span>
                 </Button>
-                <Button variant="emergency" size="sm" className="gap-2">
-                  <Phone className="h-4 w-4" />
-                  Emergency: 112
+                <Button variant="outline" size="default" className="gap-2 border-secondary/30 hover:border-secondary hover:bg-secondary/5 transition-all duration-300 group">
+                  <Shield className="h-5 w-5 text-secondary group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold">Warrior Login</span>
+                </Button>
+                <Button variant="sos" size="default" className="gap-2 animate-pulse-emergency px-6">
+                  <AlertTriangle className="h-5 w-5" />
+                  <span className="font-bold tracking-wide">SOS</span>
                 </Button>
               </div>
             </div>

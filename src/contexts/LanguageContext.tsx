@@ -1,0 +1,389 @@
+import { createContext, useContext, useState, ReactNode } from "react";
+
+type Language = "en" | "hi";
+
+interface LanguageContextType {
+  language: Language;
+  toggleLanguage: () => void;
+  t: (key: string) => string;
+}
+
+const translations: Record<Language, Record<string, string>> = {
+  en: {
+    // Header
+    "header.patientLogin": "Patient Login",
+    "header.warriorLogin": "Warrior Login",
+    "header.sos": "SOS",
+
+    // Hero
+    "hero.badge": "🇮🇳 Aatmnirbhar Bharat Initiative",
+    "hero.title1": "Every Second Counts.",
+    "hero.title2": "Sanjeevani Saves.",
+    "hero.subtitle": "India's first hyper-local emergency response network. Like Uber, but for saving lives during the Golden Hour.",
+    "hero.activateSos": "ACTIVATE SOS",
+    "hero.becomeWarrior": "Become a Health Warrior",
+    "hero.stat1Value": "<7 min",
+    "hero.stat1Label": "Avg. Response Time",
+    "hero.stat2Value": "50,000+",
+    "hero.stat2Label": "Lives Touched",
+    "hero.stat3Value": "10,000+",
+    "hero.stat3Label": "Health Warriors",
+    "hero.stat4Value": "96%",
+    "hero.stat4Label": "AI Accuracy",
+
+    // SOS
+    "sos.title1": "One-Tap",
+    "sos.title2": "Emergency SOS",
+    "sos.subtitle": "Select your emergency type and activate. Help will be dispatched within seconds.",
+    "sos.cardiac": "Cardiac / Chest Pain",
+    "sos.cardiacDesc": "Heart attack, chest pain, breathing difficulty",
+    "sos.accident": "Road Accident",
+    "sos.accidentDesc": "Vehicle accident, trauma, heavy bleeding",
+    "sos.labor": "Active Labor",
+    "sos.laborDesc": "Pregnancy emergency, delivery assistance",
+    "sos.other": "Other Critical",
+    "sos.otherDesc": "Stroke, burns, poisoning, other emergencies",
+    "sos.activate": "ACTIVATE SOS",
+    "sos.selectType": "Select emergency type to activate",
+    "sos.pressToAlert": "Press to alert nearby Health Warriors",
+    "sos.helpOnWay": "Help is on the way!",
+    "sos.dispatched": "Health Warrior dispatched. Track live below.",
+    "sos.eta": "Estimated Arrival",
+    "sos.certifiedWarrior": "Certified Health Warrior",
+    "sos.cancel": "Cancel Emergency",
+
+    // How It Works
+    "how.title1": "How",
+    "how.title2": "Sanjeevani",
+    "how.title3": "Works",
+    "how.subtitle": "From emergency to hospital in minutes, not hours. Every step designed for the Golden Hour.",
+    "how.step1Title": "One-Tap SOS",
+    "how.step1Desc": "Select emergency type with large icons. GPS and medical profile captured instantly.",
+    "how.step2Title": "Local Dispatch",
+    "how.step2Desc": "High-priority alert sent to 5 nearest registered Health Warriors (local volunteers/drivers).",
+    "how.step3Title": "Live Tracking",
+    "how.step3Desc": "Track responder in real-time. App provides step-by-step first-aid guides.",
+    "how.step4Title": "Smart Routing",
+    "how.step4Desc": "AI identifies and routes to nearest hospital equipped for your specific emergency.",
+    "how.step5Title": "Digital Handover",
+    "how.step5Desc": "Hospital receives patient data via ABHA, ensuring immediate treatment upon arrival.",
+
+    // Health Profile
+    "profile.badge": "Health Profile",
+    "profile.title1": "Your Complete Medical Identity,",
+    "profile.title2": " Always Ready",
+    "profile.subtitle": "In emergencies, every second matters. Your health profile ensures responders and hospitals have critical information instantly, avoiding dangerous diagnosis errors.",
+    "profile.feature1": "Integrated with ABHA (Ayushman Bharat Health Account)",
+    "profile.feature2": "End-to-end encrypted for privacy",
+    "profile.feature3": "Automatic sync with hospitals",
+    "profile.feature4": "Weekly health check-in reminders",
+    "profile.abhaTitle": "ABHA ID",
+    "profile.abhaDesc": "Ayushman Bharat Health Account",
+    "profile.linked": "Linked",
+    "profile.linkAbha": "Link ABHA",
+    "profile.manage": "Manage",
+    "profile.createProfile": "Create Your Health Profile",
+    "profile.personalDetails": "Personal Details",
+    "profile.personalDetailsDesc": "Age, blood group, emergency contacts",
+    "profile.medicalHistory": "Medical History",
+    "profile.medicalHistoryDesc": "Past conditions, surgeries, allergies",
+    "profile.medications": "Current Medications",
+    "profile.medicationsDesc": "Active prescriptions and dosages",
+    "profile.vitals": "Vital Records",
+    "profile.vitalsDesc": "Blood pressure, heart rate trends",
+    "profile.abhaIntegration": "ABHA Integration",
+    "profile.abhaIntegrationDesc": "Linked to Ayushman Bharat Health Account",
+    "profile.digitalRecords": "Digital Records",
+    "profile.digitalRecordsDesc": "Secure blockchain-backed health records",
+
+    // First Aid
+    "firstaid.badge": "Life-Saving Knowledge",
+    "firstaid.title1": "First Aid",
+    "firstaid.title2": "Quick Guides",
+    "firstaid.subtitle": "Step-by-step pictorial guides to stabilize patients before help arrives. Designed for non-medical users with simple, clear instructions.",
+    "firstaid.steps": "steps",
+    "firstaid.viewGuide": "View full guide",
+    "firstaid.cpr": "Cardiac Arrest / CPR",
+    "firstaid.cprSteps": "Check responsiveness|Call for help|Start chest compressions|Continue until help arrives",
+    "firstaid.bleeding": "Heavy Bleeding",
+    "firstaid.bleedingSteps": "Apply direct pressure|Elevate the wound|Keep patient calm|Do not remove cloth",
+    "firstaid.burns": "Burn Injuries",
+    "firstaid.burnsSteps": "Cool with running water|Cover loosely|Do not apply ice|Seek medical help",
+    "firstaid.stroke": "Stroke Signs (FAST)",
+    "firstaid.strokeSteps": "Face drooping?|Arm weakness?|Speech difficulty?|Time to call help",
+    "firstaid.choking": "Choking (Adult/Child)",
+    "firstaid.chokingSteps": "Encourage coughing|5 back blows|5 abdominal thrusts|Repeat until clear",
+    "firstaid.poisoning": "Poisoning",
+    "firstaid.poisoningSteps": "Identify the poison|Do not induce vomiting|Call poison control|Keep sample if possible",
+
+    // Warriors
+    "warriors.badge": "Join the Movement",
+    "warriors.title1": "Become a",
+    "warriors.title2": "Health Warrior",
+    "warriors.subtitle": "Join 10,000+ certified first-responders across India.",
+    "warriors.certifiedTraining": "Certified Training",
+    "warriors.certifiedTrainingDesc": "Complete gamified first-aid training modules and get certified",
+    "warriors.communityImpact": "Community Impact",
+    "warriors.communityImpactDesc": "Save lives in your locality and build trust within your community",
+    "warriors.register": "Register as Warrior",
+    "warriors.findNearby": "Find Warriors Near You",
+    "warriors.missionsCompleted": "missions completed",
+
+    // Footer
+    "footer.description": "India's first hyper-local emergency response network. Bridging the gap between immediate care and rural communities.",
+    "footer.emergency": "Emergency: 112",
+    "footer.product": "Product",
+    "footer.community": "Community",
+    "footer.resources": "Resources",
+    "footer.downloadApp": "Download App",
+    "footer.sosFeatures": "SOS Features",
+    "footer.healthProfile": "Health Profile",
+    "footer.firstAidGuides": "First Aid Guides",
+    "footer.becomeWarrior": "Become a Warrior",
+    "footer.trainingModules": "Training Modules",
+    "footer.successStories": "Success Stories",
+    "footer.partnerHospitals": "Partner Hospitals",
+    "footer.abhaReg": "ABHA Registration",
+    "footer.goodSamaritan": "Good Samaritan Law",
+    "footer.apiDocs": "API Documentation",
+    "footer.research": "Research Papers",
+    "footer.copyright": "© 2026 Sanjeevani - Aatmnirbhar Bharat. An initiative under the National Digital Health Mission.",
+    "footer.madeWith": "Made with",
+    "footer.forBharat": "for Bharat by Team SvaShakti",
+
+    // Sidebar
+    "sidebar.home": "Home",
+    "sidebar.healthProfile": "Health Profile",
+    "sidebar.heartRate": "Heart Rate (rPPG)",
+    "sidebar.firstAid": "First Aid",
+    "sidebar.warriors": "Warriors",
+    "sidebar.dashboard": "Emergency Dashboard",
+
+    // rPPG
+    "rppg.title": "Heart Rate Monitor",
+    "rppg.back": "Back",
+    "rppg.howItWorks": "How it works",
+    "rppg.howItWorksDesc": "rPPG (Remote Photoplethysmography) detects subtle color changes in your skin caused by blood flow to estimate your heart rate using just your camera.",
+    "rppg.gotIt": "Got it",
+    "rppg.startMeasurement": "Start Measurement",
+    "rppg.stop": "Stop",
+    "rppg.clickToStart": "Click the button below to start measuring your heart rate",
+    "rppg.heartRate": "Heart Rate",
+    "rppg.signalQuality": "Signal Quality",
+    "rppg.good": "Good",
+    "rppg.fair": "Fair",
+    "rppg.poor": "Poor",
+    "rppg.tips": "Tips for Better Results",
+    "rppg.tip1": "Keep your face centered and well-lit",
+    "rppg.tip2": "Avoid moving during measurement",
+    "rppg.tip3": "Natural lighting works best",
+    "rppg.tip4": "Remove glasses if possible",
+    "rppg.tip5": "Keep a neutral expression",
+    "rppg.disclaimer": "This is for informational purposes only and should not be used for medical diagnosis. For accurate readings, please use certified medical devices.",
+  },
+  hi: {
+    // Header
+    "header.patientLogin": "रोगी लॉगिन",
+    "header.warriorLogin": "योद्धा लॉगिन",
+    "header.sos": "SOS",
+
+    // Hero
+    "hero.badge": "🇮🇳 आत्मनिर्भर भारत पहल",
+    "hero.title1": "हर सेकंड मायने रखता है।",
+    "hero.title2": "संजीवनी बचाती है।",
+    "hero.subtitle": "भारत का पहला हाइपर-लोकल आपातकालीन प्रतिक्रिया नेटवर्क। गोल्डन ऑवर में जान बचाने के लिए उबर जैसा।",
+    "hero.activateSos": "SOS सक्रिय करें",
+    "hero.becomeWarrior": "स्वास्थ्य योद्धा बनें",
+    "hero.stat1Value": "<7 मिनट",
+    "hero.stat1Label": "औसत प्रतिक्रिया समय",
+    "hero.stat2Value": "50,000+",
+    "hero.stat2Label": "जीवन प्रभावित",
+    "hero.stat3Value": "10,000+",
+    "hero.stat3Label": "स्वास्थ्य योद्धा",
+    "hero.stat4Value": "96%",
+    "hero.stat4Label": "AI सटीकता",
+
+    // SOS
+    "sos.title1": "एक-टैप",
+    "sos.title2": "आपातकालीन SOS",
+    "sos.subtitle": "अपना आपातकालीन प्रकार चुनें और सक्रिय करें। सेकंडों में मदद भेजी जाएगी।",
+    "sos.cardiac": "हृदय / सीने में दर्द",
+    "sos.cardiacDesc": "दिल का दौरा, सीने में दर्द, सांस लेने में कठिनाई",
+    "sos.accident": "सड़क दुर्घटना",
+    "sos.accidentDesc": "वाहन दुर्घटना, आघात, भारी रक्तस्राव",
+    "sos.labor": "प्रसव पीड़ा",
+    "sos.laborDesc": "गर्भावस्था आपातकाल, प्रसव सहायता",
+    "sos.other": "अन्य गंभीर",
+    "sos.otherDesc": "स्ट्रोक, जलना, विषाक्तता, अन्य आपात स्थिति",
+    "sos.activate": "SOS सक्रिय करें",
+    "sos.selectType": "सक्रिय करने के लिए आपातकालीन प्रकार चुनें",
+    "sos.pressToAlert": "पास के स्वास्थ्य योद्धाओं को सचेत करने के लिए दबाएं",
+    "sos.helpOnWay": "मदद रास्ते में है!",
+    "sos.dispatched": "स्वास्थ्य योद्धा भेजा गया। नीचे लाइव ट्रैक करें।",
+    "sos.eta": "अनुमानित आगमन",
+    "sos.certifiedWarrior": "प्रमाणित स्वास्थ्य योद्धा",
+    "sos.cancel": "आपातकाल रद्द करें",
+
+    // How It Works
+    "how.title1": "",
+    "how.title2": "संजीवनी",
+    "how.title3": "कैसे काम करती है",
+    "how.subtitle": "आपातकाल से अस्पताल तक मिनटों में, घंटों में नहीं। गोल्डन ऑवर के लिए डिज़ाइन किया गया हर कदम।",
+    "how.step1Title": "एक-टैप SOS",
+    "how.step1Desc": "बड़े आइकन से आपातकालीन प्रकार चुनें। GPS और मेडिकल प्रोफ़ाइल तुरंत कैप्चर।",
+    "how.step2Title": "स्थानीय प्रेषण",
+    "how.step2Desc": "5 निकटतम पंजीकृत स्वास्थ्य योद्धाओं को उच्च-प्राथमिकता अलर्ट।",
+    "how.step3Title": "लाइव ट्रैकिंग",
+    "how.step3Desc": "रीयल-टाइम में प्रतिक्रियाकर्ता को ट्रैक करें। ऐप चरण-दर-चरण प्राथमिक चिकित्सा गाइड।",
+    "how.step4Title": "स्मार्ट रूटिंग",
+    "how.step4Desc": "AI आपके विशिष्ट आपातकाल के लिए सुसज्जित निकटतम अस्पताल की पहचान करता है।",
+    "how.step5Title": "डिजिटल हैंडओवर",
+    "how.step5Desc": "अस्पताल को ABHA के माध्यम से रोगी डेटा मिलता है, आगमन पर तत्काल उपचार।",
+
+    // Health Profile
+    "profile.badge": "स्वास्थ्य प्रोफ़ाइल",
+    "profile.title1": "आपकी पूर्ण चिकित्सा पहचान,",
+    "profile.title2": " हमेशा तैयार",
+    "profile.subtitle": "आपातकाल में हर सेकंड मायने रखता है। आपकी स्वास्थ्य प्रोफ़ाइल सुनिश्चित करती है कि प्रतिक्रियाकर्ताओं और अस्पतालों को तुरंत महत्वपूर्ण जानकारी मिले।",
+    "profile.feature1": "ABHA (आयुष्मान भारत स्वास्थ्य खाता) के साथ एकीकृत",
+    "profile.feature2": "गोपनीयता के लिए एंड-टू-एंड एन्क्रिप्टेड",
+    "profile.feature3": "अस्पतालों के साथ स्वचालित सिंक",
+    "profile.feature4": "साप्ताहिक स्वास्थ्य जांच रिमाइंडर",
+    "profile.abhaTitle": "ABHA ID",
+    "profile.abhaDesc": "आयुष्मान भारत स्वास्थ्य खाता",
+    "profile.linked": "जुड़ा हुआ",
+    "profile.linkAbha": "ABHA जोड़ें",
+    "profile.manage": "प्रबंधन",
+    "profile.createProfile": "अपनी स्वास्थ्य प्रोफ़ाइल बनाएं",
+    "profile.personalDetails": "व्यक्तिगत विवरण",
+    "profile.personalDetailsDesc": "आयु, रक्त समूह, आपातकालीन संपर्क",
+    "profile.medicalHistory": "चिकित्सा इतिहास",
+    "profile.medicalHistoryDesc": "पिछली स्थितियां, सर्जरी, एलर्जी",
+    "profile.medications": "वर्तमान दवाइयां",
+    "profile.medicationsDesc": "सक्रिय नुस्खे और खुराक",
+    "profile.vitals": "महत्वपूर्ण रिकॉर्ड",
+    "profile.vitalsDesc": "रक्तचाप, हृदय गति रुझान",
+    "profile.abhaIntegration": "ABHA एकीकरण",
+    "profile.abhaIntegrationDesc": "आयुष्मान भारत स्वास्थ्य खाते से जुड़ा",
+    "profile.digitalRecords": "डिजिटल रिकॉर्ड",
+    "profile.digitalRecordsDesc": "सुरक्षित ब्लॉकचेन-समर्थित स्वास्थ्य रिकॉर्ड",
+
+    // First Aid
+    "firstaid.badge": "जीवन रक्षक ज्ञान",
+    "firstaid.title1": "प्राथमिक चिकित्सा",
+    "firstaid.title2": "त्वरित गाइड",
+    "firstaid.subtitle": "मदद आने से पहले रोगियों को स्थिर करने के लिए चरण-दर-चरण गाइड। गैर-चिकित्सा उपयोगकर्ताओं के लिए सरल, स्पष्ट निर्देश।",
+    "firstaid.steps": "चरण",
+    "firstaid.viewGuide": "पूरी गाइड देखें",
+    "firstaid.cpr": "हृदय गति रुकना / CPR",
+    "firstaid.cprSteps": "प्रतिक्रिया जांचें|मदद के लिए कॉल करें|छाती दबाना शुरू करें|मदद आने तक जारी रखें",
+    "firstaid.bleeding": "भारी रक्तस्राव",
+    "firstaid.bleedingSteps": "सीधा दबाव लगाएं|घाव को ऊपर उठाएं|रोगी को शांत रखें|कपड़ा न हटाएं",
+    "firstaid.burns": "जलने की चोट",
+    "firstaid.burnsSteps": "बहते पानी से ठंडा करें|ढीला ढंकें|बर्फ न लगाएं|चिकित्सा सहायता लें",
+    "firstaid.stroke": "स्ट्रोक के लक्षण (FAST)",
+    "firstaid.strokeSteps": "चेहरा झुका हुआ?|बांह में कमजोरी?|बोलने में कठिनाई?|मदद बुलाने का समय",
+    "firstaid.choking": "गला घोंटना (वयस्क/बच्चा)",
+    "firstaid.chokingSteps": "खांसने के लिए प्रोत्साहित करें|5 पीठ पर थपकी|5 पेट पर दबाव|साफ होने तक दोहराएं",
+    "firstaid.poisoning": "विषाक्तता",
+    "firstaid.poisoningSteps": "जहर की पहचान करें|उल्टी न कराएं|जहर नियंत्रण को कॉल करें|यदि संभव हो तो नमूना रखें",
+
+    // Warriors
+    "warriors.badge": "आंदोलन में शामिल हों",
+    "warriors.title1": "बनें एक",
+    "warriors.title2": "स्वास्थ्य योद्धा",
+    "warriors.subtitle": "भारत भर में 10,000+ प्रमाणित प्रथम-प्रतिक्रियाकर्ताओं से जुड़ें।",
+    "warriors.certifiedTraining": "प्रमाणित प्रशिक्षण",
+    "warriors.certifiedTrainingDesc": "गेमिफाइड प्राथमिक चिकित्सा प्रशिक्षण मॉड्यूल पूरा करें",
+    "warriors.communityImpact": "सामुदायिक प्रभाव",
+    "warriors.communityImpactDesc": "अपने इलाके में जीवन बचाएं और विश्वास बनाएं",
+    "warriors.register": "योद्धा के रूप में पंजीकरण करें",
+    "warriors.findNearby": "पास के योद्धा खोजें",
+    "warriors.missionsCompleted": "मिशन पूरे किए",
+
+    // Footer
+    "footer.description": "भारत का पहला हाइपर-लोकल आपातकालीन प्रतिक्रिया नेटवर्क। तत्काल देखभाल और ग्रामीण समुदायों के बीच अंतर को पाटना।",
+    "footer.emergency": "आपातकालीन: 112",
+    "footer.product": "उत्पाद",
+    "footer.community": "समुदाय",
+    "footer.resources": "संसाधन",
+    "footer.downloadApp": "ऐप डाउनलोड करें",
+    "footer.sosFeatures": "SOS सुविधाएं",
+    "footer.healthProfile": "स्वास्थ्य प्रोफ़ाइल",
+    "footer.firstAidGuides": "प्राथमिक चिकित्सा गाइड",
+    "footer.becomeWarrior": "योद्धा बनें",
+    "footer.trainingModules": "प्रशिक्षण मॉड्यूल",
+    "footer.successStories": "सफलता की कहानियां",
+    "footer.partnerHospitals": "साझेदार अस्पताल",
+    "footer.abhaReg": "ABHA पंजीकरण",
+    "footer.goodSamaritan": "गुड समैरिटन कानून",
+    "footer.apiDocs": "API दस्तावेज़ीकरण",
+    "footer.research": "शोध पत्र",
+    "footer.copyright": "© 2026 संजीवनी - आत्मनिर्भर भारत। राष्ट्रीय डिजिटल स्वास्थ्य मिशन के तहत एक पहल।",
+    "footer.madeWith": "बनाया गया",
+    "footer.forBharat": "भारत के लिए टीम स्वशक्ति द्वारा",
+
+    // Sidebar
+    "sidebar.home": "होम",
+    "sidebar.healthProfile": "स्वास्थ्य प्रोफ़ाइल",
+    "sidebar.heartRate": "हृदय गति (rPPG)",
+    "sidebar.firstAid": "प्राथमिक चिकित्सा",
+    "sidebar.warriors": "योद्धा",
+    "sidebar.dashboard": "आपातकालीन डैशबोर्ड",
+
+    // rPPG
+    "rppg.title": "हृदय गति मॉनिटर",
+    "rppg.back": "वापस",
+    "rppg.howItWorks": "यह कैसे काम करता है",
+    "rppg.howItWorksDesc": "rPPG (रिमोट फोटोप्लेथिस्मोग्राफी) आपकी त्वचा में रक्त प्रवाह के कारण होने वाले सूक्ष्म रंग परिवर्तनों का पता लगाकर केवल आपके कैमरे से हृदय गति का अनुमान लगाता है।",
+    "rppg.gotIt": "समझ गया",
+    "rppg.startMeasurement": "माप शुरू करें",
+    "rppg.stop": "रोकें",
+    "rppg.clickToStart": "अपनी हृदय गति मापने के लिए नीचे बटन पर क्लिक करें",
+    "rppg.heartRate": "हृदय गति",
+    "rppg.signalQuality": "सिग्नल गुणवत्ता",
+    "rppg.good": "अच्छा",
+    "rppg.fair": "ठीक",
+    "rppg.poor": "खराब",
+    "rppg.tips": "बेहतर परिणामों के लिए सुझाव",
+    "rppg.tip1": "अपना चेहरा केंद्रित और अच्छी रोशनी में रखें",
+    "rppg.tip2": "माप के दौरान हिलने से बचें",
+    "rppg.tip3": "प्राकृतिक प्रकाश सबसे अच्छा काम करता है",
+    "rppg.tip4": "यदि संभव हो तो चश्मा हटाएं",
+    "rppg.tip5": "तटस्थ अभिव्यक्ति बनाए रखें",
+    "rppg.disclaimer": "यह केवल सूचनात्मक उद्देश्यों के लिए है और चिकित्सा निदान के लिए उपयोग नहीं किया जाना चाहिए। सटीक रीडिंग के लिए कृपया प्रमाणित चिकित्सा उपकरणों का उपयोग करें।",
+  },
+};
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = localStorage.getItem("sanjeevani-lang");
+    return (stored === "hi" ? "hi" : "en") as Language;
+  });
+
+  const toggleLanguage = () => {
+    setLanguage((prev) => {
+      const next = prev === "en" ? "hi" : "en";
+      localStorage.setItem("sanjeevani-lang", next);
+      return next;
+    });
+  };
+
+  const t = (key: string): string => {
+    return translations[language][key] || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) throw new Error("useLanguage must be used within LanguageProvider");
+  return context;
+}

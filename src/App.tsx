@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import PatientDashboard from "./pages/PatientDashboard";
+import WarriorDashboard from "./pages/WarriorDashboard";
 import WarriorRegistration from "./pages/WarriorRegistration";
 import RppgMonitor from "./pages/RppgMonitor";
 import NotFound from "./pages/NotFound";
@@ -22,6 +25,9 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/patient-dashboard" element={<PatientDashboard />} />
+              <Route path="/warrior-dashboard" element={<WarriorDashboard />} />
               <Route path="/warrior-registration" element={<WarriorRegistration />} />
               <Route path="/rppg" element={<RppgMonitor />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

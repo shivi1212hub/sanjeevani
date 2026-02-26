@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import HeroSection from "@/components/HeroSection";
@@ -18,6 +19,7 @@ const SIDEBAR_STATE_KEY = "sanjeevani-sidebar-collapsed";
 
 const Index = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [defaultOpen, setDefaultOpen] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
@@ -45,11 +47,11 @@ const Index = () => {
               <div className="flex items-center gap-2 sm:gap-3">
                 <LanguageToggle />
                 <ThemeToggle />
-                <Button variant="outline" size="default" className="gap-2 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 group">
+                <Button variant="outline" size="default" className="gap-2 border-primary/30 hover:border-primary hover:bg-primary/5 transition-all duration-300 group" onClick={() => navigate("/auth")}>
                   <User className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
                   <span className="font-semibold hidden sm:inline">{t("header.patientLogin")}</span>
                 </Button>
-                <Button variant="outline" size="default" className="gap-2 border-secondary/30 hover:border-secondary hover:bg-secondary/5 transition-all duration-300 group">
+                <Button variant="outline" size="default" className="gap-2 border-secondary/30 hover:border-secondary hover:bg-secondary/5 transition-all duration-300 group" onClick={() => navigate("/auth")}>
                   <Shield className="h-5 w-5 text-secondary group-hover:scale-110 transition-transform" />
                   <span className="font-semibold hidden sm:inline">{t("header.warriorLogin")}</span>
                 </Button>

@@ -234,6 +234,15 @@ const translations: Record<Language, Record<string, string>> = {
     "patient.recentVitals": "Recent Vitals",
     "patient.noVitals": "No vitals recorded yet. Use rPPG to measure.",
     "patient.measureNow": "Measure Heart Rate",
+    "patient.vitalsHistory": "Heart Rate History",
+    "patient.healthTips": "Daily Health Tips",
+    "patient.becomeWarrior": "Become a Health Warrior",
+    "patient.becomeWarriorDesc": "Help save lives in your community",
+    "patient.applyNow": "Apply Now",
+
+    // Auth extras
+    "auth.googleSignIn": "Continue with Google",
+    "auth.orEmail": "or continue with email",
 
     // Warrior Dashboard
     "warrior.dashboard": "Warrior Command Center",
@@ -481,6 +490,15 @@ const translations: Record<Language, Record<string, string>> = {
     "patient.recentVitals": "हाल की महत्वपूर्ण जानकारी",
     "patient.noVitals": "अभी तक कोई महत्वपूर्ण जानकारी दर्ज नहीं। rPPG से मापें।",
     "patient.measureNow": "हृदय गति मापें",
+    "patient.vitalsHistory": "हृदय गति इतिहास",
+    "patient.healthTips": "दैनिक स्वास्थ्य सुझाव",
+    "patient.becomeWarrior": "स्वास्थ्य योद्धा बनें",
+    "patient.becomeWarriorDesc": "अपने समुदाय में जीवन बचाने में मदद करें",
+    "patient.applyNow": "आवेदन करें",
+
+    // Auth extras
+    "auth.googleSignIn": "Google से जारी रखें",
+    "auth.orEmail": "या ईमेल से जारी रखें",
 
     // Warrior Dashboard
     "warrior.dashboard": "योद्धा कमांड सेंटर",

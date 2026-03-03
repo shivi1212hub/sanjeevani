@@ -11,6 +11,7 @@ import {
   Shield, AlertTriangle, MapPin, Heart, Activity, LogOut,
   User, Phone, Droplets, CheckCircle, Clock, Navigation
 } from "lucide-react";
+import WarriorApprovalPanel from "@/components/WarriorApprovalPanel";
 import { useToast } from "@/hooks/use-toast";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
@@ -230,6 +231,9 @@ const WarriorDashboard = () => {
               )}
             </CardContent>
           </Card>
+
+          {/* Warrior Applications */}
+          <WarriorApprovalPanel />
 
           {/* Patient Details */}
           {patientProfile && (

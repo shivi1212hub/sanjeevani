@@ -12,6 +12,7 @@ import {
   AlertTriangle, Heart, Activity, User, LogOut, Phone,
   Droplets, Shield, XCircle, TrendingUp, Pill, Lightbulb, Clock
 } from "lucide-react";
+import WarriorApplicationForm from "@/components/WarriorApplicationForm";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -347,20 +348,7 @@ const PatientDashboard = () => {
         </div>
 
         {/* Apply as Warrior */}
-        <Card className="border border-secondary/30 bg-secondary/5">
-          <CardContent className="p-6 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Shield className="h-8 w-8 text-secondary" />
-              <div>
-                <p className="font-semibold text-foreground">{t("patient.becomeWarrior")}</p>
-                <p className="text-sm text-muted-foreground">{t("patient.becomeWarriorDesc")}</p>
-              </div>
-            </div>
-            <Button variant="outline" onClick={() => navigate("/warrior-registration")}>
-              {t("patient.applyNow")}
-            </Button>
-          </CardContent>
-        </Card>
+        <WarriorApplicationForm />
       </main>
     </div>
   );

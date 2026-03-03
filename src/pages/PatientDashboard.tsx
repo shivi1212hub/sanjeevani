@@ -13,6 +13,7 @@ import {
   Droplets, Shield, XCircle, TrendingUp, Pill, Lightbulb, Clock
 } from "lucide-react";
 import WarriorApplicationForm from "@/components/WarriorApplicationForm";
+import MedicationReminders from "@/components/MedicationReminders";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -346,6 +347,8 @@ const PatientDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        {/* Medication Reminders */}
+        <MedicationReminders />
 
         {/* Apply as Warrior */}
         <WarriorApplicationForm />

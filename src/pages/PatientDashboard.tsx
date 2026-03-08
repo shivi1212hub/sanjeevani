@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import WarriorApplicationForm from "@/components/WarriorApplicationForm";
 import MedicationReminders from "@/components/MedicationReminders";
+import MedicationAdherence from "@/components/MedicationAdherence";
 import NearbyHospitals from "@/components/NearbyHospitals";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";

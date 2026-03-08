@@ -272,6 +272,10 @@ const WarriorDashboard = () => {
               </CardContent>
             </Card>
           )}
+          {/* Nearby Hospitals for assigned alert */}
+          {selectedAlert?.latitude && (
+            <NearbyHospitals latitude={selectedAlert.latitude} longitude={selectedAlert.longitude} />
+          )}
         </div>
       </main>
     </div>

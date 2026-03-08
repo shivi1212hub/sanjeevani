@@ -71,6 +71,11 @@ const WarriorDashboard = () => {
         osc.start(now + i * 0.4);
         osc.stop(now + i * 0.4 + 0.4);
       }
+
+      // Vibrate on supported devices (SOS pattern: 3 short, 3 long, 3 short)
+      if ("vibrate" in navigator) {
+        navigator.vibrate([200, 100, 200, 100, 200, 300, 400, 100, 400, 100, 400, 300, 200, 100, 200, 100, 200]);
+      }
     } catch (e) {
       console.warn("Buzzer audio failed:", e);
     }

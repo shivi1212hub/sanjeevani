@@ -12,6 +12,7 @@ import {
   User, Phone, Droplets, CheckCircle, Clock, Navigation
 } from "lucide-react";
 import WarriorApprovalPanel from "@/components/WarriorApprovalPanel";
+import NearbyHospitals from "@/components/NearbyHospitals";
 import { useToast } from "@/hooks/use-toast";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";

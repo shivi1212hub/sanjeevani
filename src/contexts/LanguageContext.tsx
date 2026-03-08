@@ -328,6 +328,20 @@ const translations: Record<Language, Record<string, string>> = {
     "hospitals.retry": "Retry",
     "hospitals.none": "No hospitals found within 5km",
     "hospitals.unnamed": "Hospital",
+
+    // Medication Adherence
+    "adherence.title": "Medication Adherence",
+    "adherence.description": "Track your daily medication intake",
+    "adherence.rate": "adherence",
+    "adherence.taken": "Taken",
+    "adherence.partial": "Partial",
+    "adherence.missed": "Missed",
+    "adherence.skipped": "Skipped",
+    "adherence.today": "Today's Doses",
+    "adherence.noDoses": "No doses scheduled",
+    "adherence.take": "Take",
+    "adherence.markedTaken": "Dose marked as taken ✓",
+    "adherence.markedSkipped": "Dose skipped",
   },
   hi: {
     // Header

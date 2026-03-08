@@ -348,6 +348,11 @@ const PatientDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        {/* Nearby Hospitals - shown during active SOS */}
+        {activeAlert && activeAlert.latitude && (
+          <NearbyHospitals latitude={activeAlert.latitude} longitude={activeAlert.longitude} />
+        )}
+
         {/* Medication Reminders */}
         <MedicationReminders />
 

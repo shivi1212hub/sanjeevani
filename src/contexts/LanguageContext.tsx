@@ -637,6 +637,17 @@ const translations: Record<Language, Record<string, string>> = {
     "meds.empty": "अभी तक कोई दवा नहीं जोड़ी गई। जोड़ने के लिए + दबाएं।",
     "meds.notificationsOn": "सूचनाएं सक्षम",
     "meds.enableNotifications": "सूचनाएं सक्षम करें",
+
+    // Nearby Hospitals
+    "hospitals.title": "नज़दीकी अस्पताल",
+    "hospitals.found": "मिले",
+    "hospitals.yourLocation": "आपकी स्थिति",
+    "hospitals.away": "दूर",
+    "hospitals.searching": "नज़दीकी अस्पताल खोज रहे हैं...",
+    "hospitals.error": "अस्पताल नहीं मिल सके",
+    "hospitals.retry": "पुनः प्रयास करें",
+    "hospitals.none": "5 किमी के भीतर कोई अस्पताल नहीं मिला",
+    "hospitals.unnamed": "अस्पताल",
   },
 };
 

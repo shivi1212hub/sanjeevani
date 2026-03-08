@@ -328,6 +328,20 @@ const translations: Record<Language, Record<string, string>> = {
     "hospitals.retry": "Retry",
     "hospitals.none": "No hospitals found within 5km",
     "hospitals.unnamed": "Hospital",
+
+    // Medication Adherence
+    "adherence.title": "Medication Adherence",
+    "adherence.description": "Track your daily medication intake",
+    "adherence.rate": "adherence",
+    "adherence.taken": "Taken",
+    "adherence.partial": "Partial",
+    "adherence.missed": "Missed",
+    "adherence.skipped": "Skipped",
+    "adherence.today": "Today's Doses",
+    "adherence.noDoses": "No doses scheduled",
+    "adherence.take": "Take",
+    "adherence.markedTaken": "Dose marked as taken ✓",
+    "adherence.markedSkipped": "Dose skipped",
   },
   hi: {
     // Header
@@ -648,6 +662,20 @@ const translations: Record<Language, Record<string, string>> = {
     "hospitals.retry": "पुनः प्रयास करें",
     "hospitals.none": "5 किमी के भीतर कोई अस्पताल नहीं मिला",
     "hospitals.unnamed": "अस्पताल",
+
+    // Medication Adherence
+    "adherence.title": "दवा पालन",
+    "adherence.description": "अपनी दैनिक दवा का ट्रैक रखें",
+    "adherence.rate": "पालन",
+    "adherence.taken": "ली गई",
+    "adherence.partial": "आंशिक",
+    "adherence.missed": "छूटी",
+    "adherence.skipped": "छोड़ी",
+    "adherence.today": "आज की खुराक",
+    "adherence.noDoses": "कोई खुराक निर्धारित नहीं",
+    "adherence.take": "लें",
+    "adherence.markedTaken": "खुराक ली गई ✓",
+    "adherence.markedSkipped": "खुराक छोड़ी गई",
   },
 };
 

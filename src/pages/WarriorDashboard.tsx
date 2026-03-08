@@ -215,6 +215,14 @@ const WarriorDashboard = () => {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost" size="icon"
+              onClick={() => { setBuzzerMuted((m) => !m); stopBuzzer(); }}
+              className={buzzerMuted ? "text-muted-foreground" : "text-destructive"}
+              title={buzzerMuted ? "Unmute buzzer" : "Mute buzzer"}
+            >
+              {buzzerMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            </Button>
             <LanguageToggle />
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={() => { signOut(); navigate("/"); }} className="gap-1">

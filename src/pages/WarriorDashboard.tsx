@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -9,7 +9,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import {
   Shield, AlertTriangle, MapPin, Heart, Activity, LogOut,
-  User, Phone, Droplets, CheckCircle, Clock, Navigation
+  User, Phone, Droplets, CheckCircle, Clock, Navigation,
+  Volume2, VolumeX
 } from "lucide-react";
 import WarriorApprovalPanel from "@/components/WarriorApprovalPanel";
 import NearbyHospitals from "@/components/NearbyHospitals";
@@ -42,6 +43,46 @@ const WarriorDashboard = () => {
   const [patientProfile, setPatientProfile] = useState<any>(null);
   const [patientVitals, setPatientVitals] = useState<any[]>([]);
   const [myLocation, setMyLocation] = useState<[number, number]>([28.6139, 77.2090]);
+  const [buzzerMuted, setBuzzerMuted] = useState(false);
+  const prevAlertCountRef = useRef(0);
+  const buzzerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Play emergency buzzer sound using Web Audio API
+  const playBuzzer = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ctx = audioCtxRef.current;
+      const now = ctx.currentTime;
+
+      // Two-tone siren effect
+      for (let i = 0; i < 3; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "square";
+        osc.frequency.setValueAtTime(880, now + i * 0.4);
+        osc.frequency.setValueAtTime(660, now + i * 0.4 + 0.2);
+        gain.gain.setValueAtTime(0.15, now + i * 0.4);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.4 + 0.38);
+        osc.start(now + i * 0.4);
+        osc.stop(now + i * 0.4 + 0.4);
+      }
+    } catch (e) {
+      console.warn("Buzzer audio failed:", e);
+    }
+  }, []);
+
+  // Stop buzzer loop
+  const stopBuzzer = useCallback(() => {
+    if (buzzerIntervalRef.current) {
+      clearInterval(buzzerIntervalRef.current);
+      buzzerIntervalRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth");
@@ -59,7 +100,7 @@ const WarriorDashboard = () => {
     if (user) fetchAlerts();
   }, [user]);
 
-  // Realtime alerts
+  // Realtime alerts with buzzer
   useEffect(() => {
     if (!user) return;
     const channel = supabase
@@ -68,8 +109,40 @@ const WarriorDashboard = () => {
         event: "*", schema: "public", table: "sos_alerts",
       }, () => { fetchAlerts(); })
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [user]);
+    return () => {
+      supabase.removeChannel(channel);
+      stopBuzzer();
+    };
+  }, [user, stopBuzzer]);
+
+  // Trigger buzzer when new active alerts appear
+  useEffect(() => {
+    const activeAlerts = alerts.filter((a) => a.status === "active");
+    const activeCount = activeAlerts.length;
+
+    if (activeCount > 0 && !buzzerMuted) {
+      // Play immediately and repeat every 5 seconds while active alerts exist
+      if (!buzzerIntervalRef.current) {
+        playBuzzer();
+        buzzerIntervalRef.current = setInterval(playBuzzer, 5000);
+      }
+
+      // Also send browser notification
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("🚨 Emergency SOS Alert!", {
+          body: `${activeCount} active emergency alert${activeCount > 1 ? "s" : ""} need response`,
+          tag: "sos-buzzer",
+          requireInteraction: true,
+        });
+      } else if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+    } else {
+      stopBuzzer();
+    }
+
+    prevAlertCountRef.current = activeCount;
+  }, [alerts, buzzerMuted, playBuzzer, stopBuzzer]);
 
   const fetchAlerts = async () => {
     const { data } = await supabase
@@ -142,6 +215,14 @@ const WarriorDashboard = () => {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost" size="icon"
+              onClick={() => { setBuzzerMuted((m) => !m); stopBuzzer(); }}
+              className={buzzerMuted ? "text-muted-foreground" : "text-destructive"}
+              title={buzzerMuted ? "Unmute buzzer" : "Mute buzzer"}
+            >
+              {buzzerMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+            </Button>
             <LanguageToggle />
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={() => { signOut(); navigate("/"); }} className="gap-1">

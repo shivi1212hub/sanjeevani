@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import WarriorApplicationForm from "@/components/WarriorApplicationForm";
 import MedicationReminders from "@/components/MedicationReminders";
+import NearbyHospitals from "@/components/NearbyHospitals";
 import { useToast } from "@/hooks/use-toast";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -347,6 +348,11 @@ const PatientDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        {/* Nearby Hospitals - shown during active SOS */}
+        {activeAlert && activeAlert.latitude && (
+          <NearbyHospitals latitude={activeAlert.latitude} longitude={activeAlert.longitude} />
+        )}
+
         {/* Medication Reminders */}
         <MedicationReminders />
 

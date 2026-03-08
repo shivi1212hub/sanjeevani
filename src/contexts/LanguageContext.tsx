@@ -317,6 +317,17 @@ const translations: Record<Language, Record<string, string>> = {
     "meds.empty": "No medications added yet. Tap + to add one.",
     "meds.notificationsOn": "Notifications enabled",
     "meds.enableNotifications": "Enable notifications",
+
+    // Nearby Hospitals
+    "hospitals.title": "Nearby Hospitals",
+    "hospitals.found": "found",
+    "hospitals.yourLocation": "Your Location",
+    "hospitals.away": "away",
+    "hospitals.searching": "Searching nearby hospitals...",
+    "hospitals.error": "Could not fetch hospitals",
+    "hospitals.retry": "Retry",
+    "hospitals.none": "No hospitals found within 5km",
+    "hospitals.unnamed": "Hospital",
   },
   hi: {
     // Header
@@ -626,6 +637,17 @@ const translations: Record<Language, Record<string, string>> = {
     "meds.empty": "अभी तक कोई दवा नहीं जोड़ी गई। जोड़ने के लिए + दबाएं।",
     "meds.notificationsOn": "सूचनाएं सक्षम",
     "meds.enableNotifications": "सूचनाएं सक्षम करें",
+
+    // Nearby Hospitals
+    "hospitals.title": "नज़दीकी अस्पताल",
+    "hospitals.found": "मिले",
+    "hospitals.yourLocation": "आपकी स्थिति",
+    "hospitals.away": "दूर",
+    "hospitals.searching": "नज़दीकी अस्पताल खोज रहे हैं...",
+    "hospitals.error": "अस्पताल नहीं मिल सके",
+    "hospitals.retry": "पुनः प्रयास करें",
+    "hospitals.none": "5 किमी के भीतर कोई अस्पताल नहीं मिला",
+    "hospitals.unnamed": "अस्पताल",
   },
 };
 

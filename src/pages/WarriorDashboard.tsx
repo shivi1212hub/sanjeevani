@@ -99,7 +99,7 @@ const WarriorDashboard = () => {
     if (user) fetchAlerts();
   }, [user]);
 
-  // Realtime alerts
+  // Realtime alerts with buzzer
   useEffect(() => {
     if (!user) return;
     const channel = supabase
@@ -108,8 +108,40 @@ const WarriorDashboard = () => {
         event: "*", schema: "public", table: "sos_alerts",
       }, () => { fetchAlerts(); })
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [user]);
+    return () => {
+      supabase.removeChannel(channel);
+      stopBuzzer();
+    };
+  }, [user, stopBuzzer]);
+
+  // Trigger buzzer when new active alerts appear
+  useEffect(() => {
+    const activeAlerts = alerts.filter((a) => a.status === "active");
+    const activeCount = activeAlerts.length;
+
+    if (activeCount > 0 && !buzzerMuted) {
+      // Play immediately and repeat every 5 seconds while active alerts exist
+      if (!buzzerIntervalRef.current) {
+        playBuzzer();
+        buzzerIntervalRef.current = setInterval(playBuzzer, 5000);
+      }
+
+      // Also send browser notification
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("🚨 Emergency SOS Alert!", {
+          body: `${activeCount} active emergency alert${activeCount > 1 ? "s" : ""} need response`,
+          tag: "sos-buzzer",
+          requireInteraction: true,
+        });
+      } else if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+    } else {
+      stopBuzzer();
+    }
+
+    prevAlertCountRef.current = activeCount;
+  }, [alerts, buzzerMuted, playBuzzer, stopBuzzer]);
 
   const fetchAlerts = async () => {
     const { data } = await supabase

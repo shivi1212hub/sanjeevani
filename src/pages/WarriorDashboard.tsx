@@ -9,7 +9,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import {
   Shield, AlertTriangle, MapPin, Heart, Activity, LogOut,
-  User, Phone, Droplets, CheckCircle, Clock, Navigation
+  User, Phone, Droplets, CheckCircle, Clock, Navigation,
+  Volume2, VolumeX
 } from "lucide-react";
 import WarriorApprovalPanel from "@/components/WarriorApprovalPanel";
 import NearbyHospitals from "@/components/NearbyHospitals";

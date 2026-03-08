@@ -42,6 +42,46 @@ const WarriorDashboard = () => {
   const [patientProfile, setPatientProfile] = useState<any>(null);
   const [patientVitals, setPatientVitals] = useState<any[]>([]);
   const [myLocation, setMyLocation] = useState<[number, number]>([28.6139, 77.2090]);
+  const [buzzerMuted, setBuzzerMuted] = useState(false);
+  const prevAlertCountRef = useRef(0);
+  const buzzerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Play emergency buzzer sound using Web Audio API
+  const playBuzzer = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      const ctx = audioCtxRef.current;
+      const now = ctx.currentTime;
+
+      // Two-tone siren effect
+      for (let i = 0; i < 3; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "square";
+        osc.frequency.setValueAtTime(880, now + i * 0.4);
+        osc.frequency.setValueAtTime(660, now + i * 0.4 + 0.2);
+        gain.gain.setValueAtTime(0.15, now + i * 0.4);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.4 + 0.38);
+        osc.start(now + i * 0.4);
+        osc.stop(now + i * 0.4 + 0.4);
+      }
+    } catch (e) {
+      console.warn("Buzzer audio failed:", e);
+    }
+  }, []);
+
+  // Stop buzzer loop
+  const stopBuzzer = useCallback(() => {
+    if (buzzerIntervalRef.current) {
+      clearInterval(buzzerIntervalRef.current);
+      buzzerIntervalRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth");

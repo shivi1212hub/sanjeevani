@@ -357,6 +357,9 @@ const PatientDashboard = () => {
         {/* Medication Reminders */}
         <MedicationReminders />
 
+        {/* Medication Adherence Calendar */}
+        <MedicationAdherence />
+
         {/* Apply as Warrior */}
         <WarriorApplicationForm />
       </main>

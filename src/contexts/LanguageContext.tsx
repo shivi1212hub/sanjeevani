@@ -317,6 +317,17 @@ const translations: Record<Language, Record<string, string>> = {
     "meds.empty": "No medications added yet. Tap + to add one.",
     "meds.notificationsOn": "Notifications enabled",
     "meds.enableNotifications": "Enable notifications",
+
+    // Nearby Hospitals
+    "hospitals.title": "Nearby Hospitals",
+    "hospitals.found": "found",
+    "hospitals.yourLocation": "Your Location",
+    "hospitals.away": "away",
+    "hospitals.searching": "Searching nearby hospitals...",
+    "hospitals.error": "Could not fetch hospitals",
+    "hospitals.retry": "Retry",
+    "hospitals.none": "No hospitals found within 5km",
+    "hospitals.unnamed": "Hospital",
   },
   hi: {
     // Header
